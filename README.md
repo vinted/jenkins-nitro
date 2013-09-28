@@ -6,10 +6,20 @@ Analyze Jenkins test duration changes between builds and pinpoint the slowdowns
 Installation
 ============
 
-    $ gem install jenkins-nitro
+```console
+$ gem install jenkins-nitro
+```
 
 Usage
 =====
+
+Run `jenkins-nitro` without arguments to get some help
+
+```console
+$ jenkins-nitro
+Usage: jenkins-nitro <jenkins-job-url> <fast_build_number> <slow_build_number>
+  Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158
+```
 
 View build time trend graph in Jenkins, pick two builds - one that was reasonably fast, another one after a slowdown. 
 
@@ -17,7 +27,7 @@ View build time trend graph in Jenkins, pick two builds - one that was reasonabl
 
 Then feed slow and fast build numbers to `jenkins-nitro` and analyze the output:
 
-```
+```console
 $ jenkins-nitro https://ci.jenkins-ci.org/job/jenkins_main_trunk 2882 2883
 Slowdown	Test
 ============	====
