@@ -3,11 +3,19 @@ Jenkins test suite slowdown analyzer
 
 Analyze Jenkins test duration changes between builds and pinpoint the slowdowns
 
+Installation
+============
+
+    $ gem install jenkins-nitro
+
 Usage
 =====
-View build time trend graph in Jenkins, pick two builds - one that was reasonably fast, another one after a slowdown. Feed them to `jenkins-nitro` and analyze the output:
+
+View build time trend graph in Jenkins, pick two builds - one that was reasonably fast, another one after a slowdown. 
 
 ![jenkins build time trend](https://dl.dropboxusercontent.com/u/176100/opensource/jenkins-nitro.png)
+
+Then feed slow and fast build numbers to `jenkins-nitro` and analyze the output:
 
 ```
 $ jenkins-nitro https://ci.jenkins-ci.org/job/jenkins_main_trunk 2882 2883
@@ -35,3 +43,15 @@ Total slowdown from worst 50 changes
 ============
     7.0840 s
 ```
+
+In the example above, `org.jvnet.hudson.test.SleepBuilderTest` got 12 seconds slower compared to previous build.
+
+
+Contributing
+============
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
