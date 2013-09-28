@@ -8,7 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = JenkinsNitro::VERSION
   spec.authors       = ["Tomas Varaneckas", "Lech Jankovski"]
   spec.email         = ["tomas.varaneckas@gmail.com", "lech.jankovski@gmail.com"]
-  spec.description   = %q{Analyze Jenkins test duration changes between builds and pinpoint the slowdowns}
+  spec.description   = %q{Command line tool for analyzing Jenkins test duration changes between \
+fast and slow builds and pinpointing the cause of slowdown.}
   spec.summary       = %q{Jenkins test suite slowdown analyzer}
   spec.homepage      = "https://github.com/vinted/jenkins-nitro"
   spec.license       = "MIT"
