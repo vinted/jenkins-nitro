@@ -1,7 +1,7 @@
-Jenkins test suite slowdown analyzer
-=====================================
+Jenkins Nitro: Test suite slowdown analyzer
+===================================================
 
-Analyze Jenkins test duration changes between builds and pinpoint the slowdowns
+Command line tool for analyzing Jenkins test duration changes between fast and slow builds and pinpointing the cause of slowdown.
 
 Installation
 ============
