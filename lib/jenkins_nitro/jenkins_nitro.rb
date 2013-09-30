@@ -57,19 +57,4 @@ module JenkinsNitro
     puts "Failed comparing builds: #{e}"
     exit 1
   end
-
-  def self.print_diff(diff, top_entries = 50)
-    i = 1
-    puts "Slowdown\tTest"
-    puts "============\t===="
-    diff.each do |name, duration_change|
-      i += 1
-      printf "%10.4f s\t%s\n", duration_change, name
-      break if i == top_entries
-    end
-    puts
-    puts "Total slowdown from worst #{top_entries} changes"
-    puts "============"
-    printf "%10.4f s\n", diff.values[0..top_entries].reduce(:+).round(4)
-  end
 end
