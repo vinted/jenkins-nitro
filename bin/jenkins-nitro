@@ -1,13 +1,28 @@
 #!/usr/bin/env ruby
 
-if ARGV.size != 3
-  puts "Usage: jenkins-nitro <jenkins-job-url> <fast_build_number> <slow_build_number>"
+if ARGV.size < 3 || (ARGV[3] && ARGV[3].to_i < 1)
+  puts "Usage: jenkins-nitro <jenkins-job-url> <fast_build_number> <slow_build_number> [<entry_count=50>]"
   puts "  Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158"
-  exit 0
+  puts "  Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158 20"
+  exit
 end
+
+jenkins_job_url = ARGV[0]
+build1          = ARGV[1]
+build2          = ARGV[2]
+top_entries     = (ARGV[3] || 50).to_i
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'jenkins_nitro/jenkins_nitro'
 
-diff = JenkinsNitro.compare(ARGV[0], ARGV[1], ARGV[2])
-JenkinsNitro.print_diff(diff)
+diff = JenkinsNitro.compare(jenkins_job_url, build1, build2)
+
+puts "Slowdown\tTest"
+puts "============\t===="
+diff.keys[0...top_entries].each do |name|
+  printf "%10.4f s\t%s\n", diff[name], name
+end
+puts
+puts "Total slowdown from worst #{top_entries} changes"
+puts "============"
+printf "%10.4f s\n", diff.values[0...top_entries].reduce(:+).round(4)
