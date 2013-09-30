@@ -30,33 +30,32 @@ Then feed slow and fast build numbers to `jenkins-nitro` and analyze the output:
 
 ```console
 $ jenkins-nitro https://ci.jenkins-ci.org/job/jenkins_main_trunk 2882 2883
-Slowdown      Test
-============  ====
-   12.1620 s  org.jvnet.hudson.test.SleepBuilderTest
-    0.0180 s  hudson.slaves.NodeListTest
-    0.0070 s  hudson.MarkupTextTest
-    0.0020 s  hudson.model.AbstractItemTest
-    0.0010 s  hudson.logging.LogRecorderTest
-    0.0010 s  hudson.BulkChangeTest
-    0.0010 s  hudson.model.TimeSeriesTest
-    0.0010 s  hudson.tasks._maven.Maven3MojoNoteTest
-   -0.0010 s  jenkins.model.lazy.SortedListTest
-   -0.0010 s  jenkins.model.lazy.SortedIntListTest
-   -0.0130 s  hudson.model.ResourceListTest
-   -0.2300 s  hudson.scheduler.CronTabEventualityTest
-   -0.4880 s  hudson.cli.ConnectionTest
-   -1.0250 s  hudson.FileSystemProvisionerTest
-   -1.0820 s  hudson.scm.ChangeLogSetTest
-   -1.1130 s  jenkins.ExtensionFilterTest
-   -1.1560 s  hudson.security.PermissionGroupTest
+  Slowdown     Duration     ✖ slowdown, ✓ speedup, + new entry, - removed
+============ ============ ==================================================
+                12.1620 s   + org.jvnet.hudson.test.SleepBuilderTest
+    0.0180 s     0.0320 s   ✖ hudson.slaves.NodeListTest
+    0.0070 s     0.0080 s   ✖ hudson.MarkupTextTest
+                 0.0020 s   + hudson.model.AbstractItemTest
+                 0.0010 s   + hudson.logging.LogRecorderTest
+                 0.0010 s   + hudson.BulkChangeTest
+                 0.0010 s   + hudson.model.TimeSeriesTest
+                 0.0010 s   + hudson.tasks._maven.Maven3MojoNoteTest
+   -0.0010 s     0.0000 s   ✓ jenkins.model.lazy.SortedListTest
+                            - jenkins.model.lazy.SortedIntListTest
+                            - hudson.model.ResourceListTest
+   -0.2300 s     0.0700 s   ✓ hudson.scheduler.CronTabEventualityTest
+   -0.4880 s     0.6170 s   ✓ hudson.cli.ConnectionTest
+   -1.0250 s     1.9380 s   ✓ hudson.FileSystemProvisionerTest
+   -1.0820 s     1.7930 s   ✓ hudson.scm.ChangeLogSetTest
+   -1.1130 s     1.9260 s   ✓ jenkins.ExtensionFilterTest
+   -1.1560 s     1.7210 s   ✓ hudson.security.PermissionGroupTest
 
-Total slowdown from worst 17 changes
+Total slowdown from top 17 changes
 ============
     7.0840 s
 ```
 
 In the example above, `org.jvnet.hudson.test.SleepBuilderTest` got 12 seconds slower compared to previous build.
-
 
 Contributing
 ============
