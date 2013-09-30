@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 if ARGV.size < 3 || (ARGV[3] && ARGV[3].to_i < 1)
-  puts "Usage: jenkins-nitro <jenkins-job-url> <fast_build_number> <slow_build_number> [<entry_count=50>]"
+  puts "Usage: jenkins-nitro <jenkins-job-url> <fast-build-number> <slow-build-number> [<entry-count=50>]"
   puts "  Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158"
   puts "  Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158 20"
   exit
@@ -15,14 +15,59 @@ top_entries     = (ARGV[3] || 50).to_i
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'jenkins_nitro/jenkins_nitro'
 
-diff = JenkinsNitro.compare(jenkins_job_url, build1, build2)
+diffs = JenkinsNitro.compare(jenkins_job_url, build1, build2)
 
-puts "Slowdown\tTest"
-puts "============\t===="
-diff.keys[0...top_entries].each do |name|
-  printf "%10.4f s\t%s\n", diff[name], name
+unless diffs
+  puts "No diff. Do you even commit, bro?"
+  exit
 end
+
+
+SLOWDOWN_FLAG   = '✖'
+SPEEDUP_FLAG    = '✓'
+REMOVED_FLAG    = '-'
+NEW_ENTRY_FLAG  = '+'
+
+def colorize(line, color)
+  "\e[#{color}m#{line}\e[0m"
+end
+
+COLORS          = {
+  SLOWDOWN_FLAG   => '1;31',
+  SPEEDUP_FLAG    => '1;32',
+  REMOVED_FLAG    => '0;32',
+  NEW_ENTRY_FLAG  => '0;31',
+}
+
+flags_header = "#{SLOWDOWN_FLAG} slowdown, #{SPEEDUP_FLAG} speedup, " +
+               "#{NEW_ENTRY_FLAG} new entry, #{REMOVED_FLAG} removed"
+puts "  Slowdown     Duration     #{flags_header}                                 "
+puts "============ ============ =================================================="
+
+top_entries = [top_entries, diffs.size].min
+diffs.keys[0...top_entries].each do |name|
+  diff = diffs[name]
+
+  flag = '✓'
+  flag = '✖' if diff.slowdown?
+  flag = '-' if diff.removed?
+  flag = '+' if diff.new_entry?
+
+  slowdown  = sprintf('%10.4f s', diff.duration_diff) unless diff.removed? || diff.new_entry?
+  duration  = sprintf('%10.4f s', diff.duration) unless diff.removed?
+
+  line  = sprintf("%12s %12s   %s %s", slowdown, duration, flag, name)
+  color = COLORS[flag]
+  puts colorize(line, color)
+end
+
+total_diff        = diffs.values[0...top_entries].map(&:duration_diff).reduce(:+).round(4)
+diff_orientation  = total_diff > 0 ? 'slowdown' : 'speedup'
+formatted_diff    = sprintf("%10.4f s", total_diff)
+
 puts
-puts "Total slowdown from worst #{top_entries} changes"
+puts "Total #{diff_orientation} from top #{top_entries} changes"
 puts "============"
-printf "%10.4f s\n", diff.values[0...top_entries].reduce(:+).round(4)
+puts colorize(formatted_diff, total_diff > 0 ? COLORS[SLOWDOWN_FLAG] : COLORS[SPEEDUP_FLAG])
+
+exit 1 if total_diff > 0
