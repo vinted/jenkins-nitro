@@ -55,6 +55,14 @@ Total slowdown from top 17 changes
     7.0840 s
 ```
 
+TODO
+====
+
+- Diff between two last builds if build numbers is not provided
+- Ability to work with raw JUnit XML files instead of Jenkins URL
+- Use optparse
+- Add more options and flexibility
+
 Contributing
 ============
 
