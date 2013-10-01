@@ -17,7 +17,7 @@ Run `jenkins-nitro` without arguments to get some help
 
 ```console
 $ jenkins-nitro
-Usage: jenkins-nitro <jenkins-job-url> <fast_build_number> <slow_build_number> [<entry_count=50>]
+Usage: jenkins-nitro <jenkins-job-url> <fast-build-number> <slow-build-number> [<entry-count=50>]
   Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158
   Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158 20
 ```
