@@ -55,8 +55,6 @@ Total slowdown from top 17 changes
     7.0840 s
 ```
 
-In the example above, `org.jvnet.hudson.test.SleepBuilderTest` got 12 seconds slower compared to previous build.
-
 Contributing
 ============
 
