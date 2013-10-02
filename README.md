@@ -59,6 +59,7 @@ TODO
 ====
 
 - Diff between two last builds if build numbers is not provided
+- Diff between two ranges of builds (i.e.: 100-150 and 151-200)
 - Ability to work with raw JUnit XML files instead of Jenkins URL
 - Use optparse
 - Add more options and flexibility
