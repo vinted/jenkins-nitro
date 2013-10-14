@@ -3,6 +3,12 @@ require 'json'
 require 'open-uri'
 
 module JenkinsNitro
+  Build = Struct.new(:url, :number) do
+    def results
+      TestResults.for(self)
+    end
+  end
+
   Diff = Struct.new(:duration, :duration_diff) do
     def slowdown?
       duration_diff > 0
@@ -18,8 +24,8 @@ module JenkinsNitro
   end
 
   class TestResults
-    def initialize(build_url, build_number)
-      parse("#{build_url}/#{build_number}/testReport/api/json")
+    def initialize(build)
+      parse("#{build.url}/#{build.number}/testReport/api/json")
     end
 
     def suite_durations
@@ -51,6 +57,10 @@ module JenkinsNitro
       diff
     end
 
+    def self.for(build)
+      TestResults.new(build)
+    end
+
     private
 
     def parse(build_result_url)
@@ -66,11 +76,8 @@ module JenkinsNitro
     end
   end
 
-  def self.compare(build_url, build1, build2)
-    results1 = TestResults.new(build_url, build1)
-    results2 = TestResults.new(build_url, build2)
-
-    diff = results1.compare_to(results2)
+  def self.compare(build1, build2)
+    diff = build1.results.compare_to(build2.results)
     return unless diff.any?
 
     diff = Hash[diff.sort_by { |_, diff| -diff.duration_diff }]

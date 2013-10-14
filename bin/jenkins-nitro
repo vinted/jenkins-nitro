@@ -1,21 +1,16 @@
 #!/usr/bin/env ruby
 
-if ARGV.size < 3 || (ARGV[3] && ARGV[3].to_i < 1)
-  puts "Usage: jenkins-nitro <jenkins-job-url> <fast-build-number> <slow-build-number> [<entry-count=50>]"
-  puts "  Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158"
-  puts "  Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158 20"
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+require 'jenkins_nitro/jenkins_nitro'
+require 'jenkins_nitro/options'
+
+options = JenkinsNitro::CLI::Options.new(ARGV)
+if options.empty?
+  options.print_help
   exit
 end
 
-jenkins_job_url = ARGV[0]
-build1          = ARGV[1]
-build2          = ARGV[2]
-top_entries     = (ARGV[3] || 50).to_i
-
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-require 'jenkins_nitro/jenkins_nitro'
-
-diffs = JenkinsNitro.compare(jenkins_job_url, build1, build2)
+diffs = JenkinsNitro.compare(options.fast_build, options.slow_build)
 
 unless diffs
   puts "No diff. Do you even commit, bro?"
@@ -44,7 +39,7 @@ flags_header = "#{SLOWDOWN_FLAG} slowdown, #{SPEEDUP_FLAG} speedup, " +
 puts "  Slowdown     Duration     #{flags_header}                                 "
 puts "============ ============ =================================================="
 
-top_entries = [top_entries, diffs.size].min
+top_entries = [options.top_entries, diffs.size].min
 diffs.keys[0...top_entries].each do |name|
   diff = diffs[name]
 
