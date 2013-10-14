@@ -48,10 +48,10 @@ top_entries = [top_entries, diffs.size].min
 diffs.keys[0...top_entries].each do |name|
   diff = diffs[name]
 
-  flag = '✓'
-  flag = '✖' if diff.slowdown?
-  flag = '-' if diff.removed?
-  flag = '+' if diff.new_entry?
+  flag = SPEEDUP_FLAG
+  flag = SLOWDOWN_FLAG if diff.slowdown?
+  flag = REMOVED_FLAG if diff.removed?
+  flag = NEW_ENTRY_FLAG if diff.new_entry?
 
   slowdown  = sprintf('%10.4f s', diff.duration_diff) unless diff.removed? || diff.new_entry?
   duration  = sprintf('%10.4f s', diff.duration) unless diff.removed?
