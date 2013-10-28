@@ -17,9 +17,10 @@ Run `jenkins-nitro` without arguments to get some help
 
 ```console
 $ jenkins-nitro
-Usage: jenkins-nitro <jenkins-job-url> <fast-build-number> <slow-build-number> [<entry-count=50>]
-  Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158
-  Ex.: jenkins-nitro https://jenkins.example.com/job/foobar 120 158 20
+Usage: jenkins-nitro <jenkins-job-url> <fast-build-number> [<jenkins-job-url-for-slow-build>] <slow-build-number> [<entry-count=50>]
+  Ex.: jenkins-nitro https://jenkins.example.com/job/foo 120 158
+  Ex.: jenkins-nitro https://jenkins.example.com/job/foo 120 158 20
+  Ex.: jenkins-nitro https://jenkins.example.com/job/foo 120 https://jenkins.example.com/job/bar 178 20
 ```
 
 View build time trend graph in Jenkins, pick two builds - one that was reasonably fast, another one after a slowdown.
