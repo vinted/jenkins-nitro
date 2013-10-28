@@ -6,8 +6,8 @@ require 'jenkins_nitro/version'
 Gem::Specification.new do |spec|
   spec.name          = "jenkins-nitro"
   spec.version       = JenkinsNitro::VERSION
-  spec.authors       = ["Tomas Varaneckas", "Lech Jankovski"]
-  spec.email         = ["tomas.varaneckas@gmail.com", "lech.jankovski@gmail.com"]
+  spec.authors       = ["Tomas Varaneckas", "Lech Jankovski", "Tomas Brazys"]
+  spec.email         = ["tomas.varaneckas@gmail.com", "lech.jankovski@gmail.com", "tomas.brazys@gmail.com"]
   spec.description   = %q{Command line tool for analyzing Jenkins test duration changes between \
 fast and slow builds and pinpointing the cause of slowdown.}
   spec.summary       = %q{Jenkins test suite slowdown analyzer}
