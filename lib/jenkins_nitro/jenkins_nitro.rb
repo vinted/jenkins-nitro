@@ -7,6 +7,14 @@ module JenkinsNitro
     def results
       TestResults.for(self)
     end
+
+    def number
+      self[:number].to_s.empty? || self[:number] == 'stable' ? last_stable_number : self[:number]
+    end
+
+    def last_stable_number
+      Api::job(url)['lastStableBuild']['number']
+    end
   end
 
   Diff = Struct.new(:duration, :duration_diff) do
@@ -25,7 +33,7 @@ module JenkinsNitro
 
   class TestResults
     def initialize(build)
-      parse("#{build.url}/#{build.number}/testReport/api/json")
+      parse(build)
     end
 
     def suite_durations
@@ -63,8 +71,8 @@ module JenkinsNitro
 
     private
 
-    def parse(build_result_url)
-      @result = JSON.parse(open(build_result_url).read)
+    def parse(build)
+      @result = Api::test_report(build.url, build.number)
     end
 
     def suites
@@ -73,6 +81,20 @@ module JenkinsNitro
 
     def significant_difference?(duration, other_duration, min_diff_percent)
       (100 - (other_duration * 100 / duration)).abs > min_diff_percent
+    end
+  end
+
+  class Api
+    def self.test_report(url, build_number)
+      fetch("#{url}/#{build_number}/testReport/api/json")
+    end
+
+    def self.job(url)
+      fetch("#{url}/api/json")
+    end
+
+    def self.fetch(url)
+      JSON.parse(open(url).read)
     end
   end
 
