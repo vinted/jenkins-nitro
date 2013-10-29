@@ -18,7 +18,8 @@ unless diffs
   exit
 end
 
-JenkinsNitro::CLI::ColorFormatter.print(diffs, options)
+formatter = options.color_output ? JenkinsNitro::CLI::ColorFormatter : JenkinsNitro::CLI::Formatter
+formatter.print(diffs, options)
 
 total_diff = JenkinsNitro::Diff.total(diffs, options)
 exit 1 if total_diff > 0
