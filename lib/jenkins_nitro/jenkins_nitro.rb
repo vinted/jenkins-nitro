@@ -29,6 +29,11 @@ module JenkinsNitro
     def removed?
       duration == -duration_diff
     end
+
+    def self.total(diffs, options)
+      top_entries = [options.top_entries, diffs.size].min
+      diffs.values[0...top_entries].map(&:duration_diff).reduce(:+).round(4)
+    end
   end
 
   class TestResults
