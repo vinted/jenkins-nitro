@@ -104,7 +104,7 @@ module JenkinsNitro
   end
 
   def self.compare(build1, build2)
-    diff = build1.results.compare_to(build2.results)
+    diff = build2.results.compare_to(build1.results)
     return unless diff.any?
 
     diff = Hash[diff.sort_by { |_, diff| -diff.duration_diff }]
