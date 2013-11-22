@@ -13,7 +13,7 @@ module JenkinsNitro
     end
 
     def last_stable_number
-      Api::job(url)['lastStableBuild']['number']
+      ApiClient::job(url)['lastStableBuild']['number']
     end
   end
 
@@ -77,7 +77,7 @@ module JenkinsNitro
     private
 
     def parse(build)
-      @result = Api::test_report(build.url, build.number)
+      @result = ApiClient::test_report(build.url, build.number)
     end
 
     def suites
@@ -89,7 +89,7 @@ module JenkinsNitro
     end
   end
 
-  class Api
+  class ApiClient
     def self.test_report(url, build_number)
       fetch("#{url}/#{build_number}/testReport/api/json")
     end
